@@ -182,7 +182,7 @@ export default function ChatWindow() {
                 <div className="flex gap-4 mt-4 justify-center text-[10px] text-neutral-500 uppercase tracking-widest font-semibold">
                     <span className="flex items-center gap-1.5"><Key size={10} /> Secure Auth</span>
                     <span className="flex items-center gap-1.5"><Package size={10} /> Smart Inventory</span>
-                    <span className="flex items-center gap-1.5"><Search size={10} /> Instant Lookup</span>
+                    <span className="flex items-center gap-1.5"><Search size={10} /> Instant Lookup.</span>
                 </div>
             </div>
 
