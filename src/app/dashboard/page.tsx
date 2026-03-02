@@ -16,6 +16,7 @@ import {
     ChevronLeft,
     ChevronRight
 } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 
 interface InventoryItem {
     id: string;
@@ -28,6 +29,9 @@ interface InventoryItem {
 }
 
 export default function Dashboard() {
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
     const [items, setItems] = useState<InventoryItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
@@ -37,7 +41,11 @@ export default function Dashboard() {
         total: 0
     });
 
-    const router = useRouter();
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/login");
+        }
+    }, [status, router]);
 
     const fetchItems = async (page = 1) => {
         setIsLoading(true);
@@ -61,8 +69,8 @@ export default function Dashboard() {
         fetchItems(pagination.page);
     }, [pagination.page]);
 
-    const handleLogout = () => {
-        // Basic logout logic: redirect to login
+    const handleLogout = async () => {
+        await signOut({ redirect: false });
         router.push("/login?message=Logged out successfully");
     };
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Package, Mail, Lock, LogIn, ArrowRight, Loader2, CheckCircle } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -27,24 +28,16 @@ export default function Login() {
         setSuccessMsg("");
 
         try {
-            const res = await fetch("/api/ai", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    query: `SIMULATED_ACTION`,
-                    manualAction: {
-                        module: "auth",
-                        action: "login",
-                        data: { email, password }
-                    }
-                }),
+            const result = await signIn("credentials", {
+                email,
+                password,
+                redirect: false,
             });
 
-            const data = await res.json();
-            if (res.ok) {
-                router.push("/");
+            if (result?.error) {
+                setError(result.error);
             } else {
-                setError(data.error || "Login failed");
+                router.push("/");
             }
         } catch (err) {
             setError("Something went wrong");

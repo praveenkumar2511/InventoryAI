@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Send, Bot, User, Loader2, Package, Search, PlusCircle, Trash2, Key } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
+import { Send, Bot, User, Loader2, Package, Search, PlusCircle, Trash2, Key, LogOut } from "lucide-react";
 
 interface Message {
     role: "user" | "ai";
@@ -75,7 +76,13 @@ export default function ChatWindow() {
                 </div>
                 <div className="flex items-center gap-4">
                     <Link href="/dashboard" className="text-sm font-semibold text-neutral-400 hover:text-white transition-colors">Dashbord</Link>
-                    <Link href="/login" className="text-sm font-semibold text-neutral-400 hover:text-white transition-colors">Login</Link>
+                    <button
+                        onClick={() => signOut({ callbackUrl: "/login?message=Logged out successfully" })}
+                        className="flex items-center gap-2 text-sm font-semibold text-neutral-400 hover:text-red-400 transition-colors"
+                    >
+                        <LogOut size={16} />
+                        Logout
+                    </button>
                     <Link href="/register" className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-sm font-bold text-white transition-all shadow-lg shadow-indigo-600/20 active:scale-95">Sign Up</Link>
                 </div>
             </header>
